@@ -14,12 +14,12 @@ final class InertiaTypescriptGeneratorServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/inertia-typescript-generator.php' => config_path('typescript-generator.php'),
+            __DIR__ . '/../config/inertia-typescript-generator.php' => config_path('inertia-typescript-generator.php'),
         ], 'config');
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/typescript-generator.php',
-            'typescript-generator',
+            __DIR__ . '/../config/inertia-typescript-generator.php',
+            'inertia-typescript-generator',
         );
 
         if ($this->app->runningInConsole()) {
