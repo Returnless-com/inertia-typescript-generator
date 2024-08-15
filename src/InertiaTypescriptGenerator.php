@@ -8,6 +8,7 @@ use Generator;
 use Returnless\InertiaTypescriptGenerator\Iterators\AbstractAttributeIterator;
 use Returnless\InertiaTypescriptGenerator\Writers\WriterInterface;
 use Returnless\TypescriptGenerator\TypescriptGenerator;
+use Symfony\Component\Process\Process;
 
 final readonly class InertiaTypescriptGenerator
 {
@@ -32,5 +33,30 @@ final readonly class InertiaTypescriptGenerator
                 $typescriptGenerator->generate($typescriptAttribute),
             );
         }
+
+        $this->afterGenerate();
+    }
+
+    private function afterGenerate(): void
+    {
+        /** @var array<string, list<string>> $afterGenerate */
+        $afterGenerate = config('inertia-typescript-generator.after_generate') ?? [];
+
+        foreach ($afterGenerate as $command => $arguments) {
+            $this->runProcess($command, $arguments);
+        }
+    }
+
+    /**
+     * @param  list<string>  $arguments
+     */
+    private function runProcess(string $command, array $arguments): void
+    {
+        $filePattern = config('inertia-typescript-generator.output_path') . '/**/types.ts';
+
+        array_unshift($arguments, $command);
+
+        $process = new Process(['npx', '--yes', ...$arguments, $filePattern]);
+        $process->run();
     }
 }
