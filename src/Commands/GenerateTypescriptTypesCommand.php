@@ -7,6 +7,7 @@ namespace Returnless\InertiaTypescriptGenerator\Commands;
 use Illuminate\Console\Command;
 use Returnless\InertiaTypescriptGenerator\InertiaTypescriptGenerator;
 use Returnless\InertiaTypescriptGenerator\Iterators\Psr4AttributeIterator;
+use Returnless\InertiaTypescriptGenerator\Writers\FileWriter;
 
 final class GenerateTypescriptTypesCommand extends Command
 {
@@ -29,12 +30,9 @@ final class GenerateTypescriptTypesCommand extends Command
      */
     public function handle(): int
     {
-        /** @var string $outputPath */
-        $outputPath = config('inertia-typescript-generator.output_path');
-
         $typescriptGenerator = new InertiaTypescriptGenerator(
             new Psr4AttributeIterator,
-            $outputPath,
+            new FileWriter,
         );
 
         foreach ($typescriptGenerator->generate() as $file) {
