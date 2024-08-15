@@ -12,8 +12,6 @@ use Returnless\InertiaTypescriptGenerator\Attributes\TypescriptNamespace;
 
 final class FileWriter implements WriterInterface
 {
-    private static ?string $outputPath = null;
-
     /**
      * @param  class-string  $attribute
      *
@@ -36,7 +34,7 @@ final class FileWriter implements WriterInterface
         /** @var string $outputPath */
         $outputPath = config('inertia-typescript-generator.output_path');
 
-        $path = $outputPath . '/' . $this->getPath($typescriptAttribute);
+        $path = config('inertia-typescript-generator.output_path') . '/' . $this->getPath($typescriptAttribute);
 
         File::ensureDirectoryExists(dirname($path));
         File::put($path, $generatedClassTypes);
@@ -51,7 +49,7 @@ final class FileWriter implements WriterInterface
     {
         $reflectionClass = new ReflectionClass($typescriptAttribute);
 
-        $path = $this->getOutputPath() . '/' . $reflectionClass->getProperty('viewPath')->getDefaultValue() . '/types.ts';
+        $path = config('inertia-typescript-generator.page_path') . '/' . $reflectionClass->getProperty('viewPath')->getDefaultValue() . '/types.ts';
 
         /** @var \ReflectionAttribute<\Returnless\InertiaTypescriptGenerator\Attributes\TypescriptNamespace>|null $reflectionAttribute */
         $reflectionAttribute = Arr::first(
@@ -68,17 +66,5 @@ final class FileWriter implements WriterInterface
         }
 
         return $path;
-    }
-
-    private function getOutputPath(): string
-    {
-        if (self::$outputPath === null) {
-            /** @var string $outputPath */
-            $outputPath = config('inertia-typescript-generator.output_path');
-
-            self::$outputPath = $outputPath;
-        }
-
-        return self::$outputPath;
     }
 }

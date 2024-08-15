@@ -14,4 +14,16 @@ return [
      */
     'page_path' => 'Pages',
 
+    /**
+     * These are the commands that will be run after the typescript files are generated.
+     */
+    'after_generate' => [
+        'prettier' => [
+            '--write',
+        ],
+        'eslint' => [
+            '--fix',
+        ],
+    ],
+
 ];
