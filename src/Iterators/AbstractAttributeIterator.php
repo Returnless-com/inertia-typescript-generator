@@ -53,7 +53,7 @@ abstract class AbstractAttributeIterator implements IteratorAggregate
                             $reflectionClass = new ReflectionClass($className);
 
                             return Arr::first($reflectionClass->getAttributes(Typescript::class));
-                        } catch (ReflectionException) {
+                        } catch (ReflectionException $e) {
                             return null;
                         }
                     })
