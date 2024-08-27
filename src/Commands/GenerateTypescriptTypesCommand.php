@@ -35,8 +35,8 @@ final class GenerateTypescriptTypesCommand extends Command
             new FileWriter,
         );
 
-        foreach ($typescriptGenerator->generate() as $file) {
-            $this->info("Generated: $file");
+        foreach ($typescriptGenerator->generate() as $attribute => $output) {
+            $this->info("Generated typescript types for: $attribute");
         }
 
         return self::SUCCESS;

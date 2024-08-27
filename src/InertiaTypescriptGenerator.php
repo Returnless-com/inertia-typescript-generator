@@ -18,7 +18,7 @@ final readonly class InertiaTypescriptGenerator
     ) {}
 
     /**
-     * @return \Generator<string>
+     * @return \Generator<class-string, string>
      *
      * @throws \ReflectionException
      */
@@ -28,10 +28,12 @@ final readonly class InertiaTypescriptGenerator
 
         /** @var class-string $typescriptAttribute */
         foreach ($this->attributeIterator as $typescriptAttribute) {
-            yield $this->writer->write(
+            $output = $this->writer->write(
                 $typescriptAttribute,
                 $typescriptGenerator->generate($typescriptAttribute),
             );
+
+            yield $typescriptAttribute => $output;
         }
 
         $this->afterGenerate();
